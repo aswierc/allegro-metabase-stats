@@ -1,31 +1,25 @@
-fs = require('fs');
+const { writeTokens, readTokens } = require('../src/infrastructure/token/tokenStorage')
+const dotenv = require('dotenv');
+dotenv.config()
 
 const config = {
-    app_name: 'Sheepie - statistics',
+    app_name: process.env.APP_NAME,
     type: 'device',
-    client_id: '9db4cb4878e14687a5f596656977b5e2',
-    client_secret: 'Pq7ka6IEK5AFweOXlUfn2ZLAOwLeYTiHPdjQI4B68zUoL14711T51XJQ8D9rOMTZ',
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
 }
 
-const tokenFile = './storage/token.serialized'
-
 const options = {
-    account: 'allegro-account', // default
+    account: 'allegro-account',
     isLogging: true,
     sandbox: false,
     logger: false,
     storage: {
         async set(account, tokens) {
-            const json = JSON.stringify(tokens)
-            fs.writeFile(tokenFile, json, () => {});
+            writeTokens(tokens)
         },
         async get(account) {
-            if (fs.existsSync(tokenFile)) {
-                const data = fs.readFileSync(tokenFile, 'utf8')
-                return JSON.parse(data)
-            }
-
-            return null
+            return readTokens()
         },
     },
 }

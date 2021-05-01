@@ -13,6 +13,7 @@
   "dependencies": {
     "allegro-rest-client": "^1.1.1",
     "commander": "^7.2.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.15.2"
   },
@@ -29,5 +30,9 @@
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "bin": {
+    "sheepie-stats": "importOffers.js"
+  },
+  "author": ""
 }
