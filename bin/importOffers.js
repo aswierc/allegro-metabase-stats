@@ -6,3 +6,4 @@ try {
     console.log('error');
     console.error(err)
 }
+

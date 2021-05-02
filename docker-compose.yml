@@ -1,20 +1,27 @@
 version: '3'
 
+volumes:
+    db-data:
+
 services:
     app:
         build: ./stack
         depends_on:
-            - postgres
+            - db
         command: npm start
         ports:
             - "5000:5000"
         volumes:
             - ./:/stats:delegated
         environment:
-            DATABASE_URL: postgres://stats@postgres/stats
-    postgres:
-        image: postgres:11.2-alpine
+            DATABASE_URL: postgresql://postgres@db:5432/stats
+    db:
+        image: postgres:12.2-alpine
+        ports:
+            - "5438:5432"
+        volumes:
+            - db-data:/var/lib/postgresql/data
+            - /tmp:/tmp
         environment:
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_USER: stats
             POSTGRES_DB: stats
+            POSTGRES_HOST_AUTH_METHOD: trust
