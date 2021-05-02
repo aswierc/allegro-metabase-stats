@@ -2,10 +2,11 @@ version: '3'
 
 volumes:
     db-data:
+    metabase-data:
 
 services:
     app:
-        build: ./stack
+        build: ./stack/node
         depends_on:
             - db
         command: npm start
@@ -15,6 +16,17 @@ services:
             - ./:/stats:delegated
         environment:
             DATABASE_URL: postgresql://postgres@db:5432/stats
+    metabase:
+        image: metabase/metabase
+        depends_on:
+            - metabase-db
+            - db
+        volumes:
+            - metabase-data:/data
+        ports:
+            - 3000:3000
+        environment:
+            MB_DB_CONNECTION_URI: postgresql://postgres@metabase-db:5432/metabase
     db:
         image: postgres:12.2-alpine
         ports:
@@ -24,4 +36,14 @@ services:
             - /tmp:/tmp
         environment:
             POSTGRES_DB: stats
+            POSTGRES_HOST_AUTH_METHOD: trust
+    metabase-db:
+        image: postgres:12.2-alpine
+        ports:
+            - "5439:5432"
+        volumes:
+            - metabase-data:/var/lib/postgresql/data
+            - /tmp:/tmp
+        environment:
+            POSTGRES_DB: metabase
             POSTGRES_HOST_AUTH_METHOD: trust
