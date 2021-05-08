@@ -5,17 +5,18 @@ volumes:
     metabase-data:
 
 services:
-    app:
-        build: ./stack/node
-        depends_on:
-            - db
-        command: npm start
-        ports:
-            - "5000:5000"
-        volumes:
-            - ./:/stats:delegated
-        environment:
-            DATABASE_URL: postgresql://postgres@db:5432/stats
+#    app:
+#        build: ./stack/node
+#        depends_on:
+#            - db
+#        command: npm install
+#        command: supervisor index.js
+#        ports:
+#            - "5000:5000"
+#        volumes:
+#            - ./:/stats:delegated
+#        environment:
+#            DATABASE_URL: postgresql://postgres@db:5432/stats
     metabase:
         image: metabase/metabase
         depends_on:

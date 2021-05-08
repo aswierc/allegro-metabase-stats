@@ -5,7 +5,6 @@ const priceStock = require('../../infrastructure/model/priceStock')
 module.exports = () => {
     offers().then((resp) => {
         resp.offers.forEach((element) => {
-
             // save price stock
             priceStock.findOne({
                 where: {
@@ -28,6 +27,7 @@ module.exports = () => {
                 }
             })
 
+            // save offers
             let visitsCount = 0
             let watchersCount = 0
             if (typeof(element.stats.visitsCount) != 'undefined' && null !== element.stats.visitsCount) {
